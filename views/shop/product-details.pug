@@ -1,0 +1,24 @@
+extends ../layout/layout.pug
+
+block styles
+     link(rel="stylesheet" href="/css/shop.css")
+
+block content
+    div.product__main
+        if(!isAuthenticated)
+            a(href="/login" class="details__whenAuthenticated") Signin and add to your card
+
+        h1 Product details of #{prods.name}
+        div.all__products
+                div.product__details
+                    h2.product__title #{prods.name}
+                    img.product__img(src=`/${prods.imageUrl}`)
+                    div.product__offers
+                        h3.product__price £#{prods.price}
+                        p.product__desc #{prods.description}
+                        if(isAuthenticated)
+                            //- form(action=`/add-to-cart/${prods._id}` method="post") 
+                            input(type="hidden", name="productId", value=`${prods._id}`)
+                            input(type="hidden", name="_csrf" value=`${csrfToken}`)
+                            button.product__add-to-cart(type="button" onclick="addToCart(this)") Add to cart
+    script(src="/javascript/shop.js")

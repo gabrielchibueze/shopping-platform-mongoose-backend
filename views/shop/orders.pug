@@ -1,0 +1,23 @@
+extends ../layout/layout.pug
+
+block styles 
+    link(rel="stylesheet", href="/css/product.css")
+block content
+    if(prod.length > 0)
+
+        div.order__main
+            .order-top
+                h1 My Orders
+                //- h4.total-price Total order amount: £#{totalPrice}
+            each orders in prod
+                div.order__details
+                    .order-ids 
+                        p.order-id Order ID: ##{orders._id}
+                        p.order-id #{orders.orderDate}
+                        a.order-invoice(href=`/invoice/${orders._id}` target="_blank") Order Invoice
+                    .order-group
+                        each product in orders.order
+                            div.order__offers
+                                p.order__name Product Name: #{product.product.name}
+                                p.order__quantity |  Qty: #{product.quantity}
+                            

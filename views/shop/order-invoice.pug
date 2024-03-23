@@ -1,0 +1,31 @@
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title #{pageTitle}
+        block style 
+        link(rel="stylesheet", href="/css/product.css")
+        link(rel="stylesheet" href="/css/shop.css")
+        link(rel="stylesheet" href="/css/main.css")
+
+
+    body.invoice-main 
+        div.order__main
+            h2 Hello #{userName}
+            a(href=`/invoice/generated-invoice/${order._id}`) download
+            .order-top
+                h1 Order invoice
+                h4.total-price Total order amount: £#{totalPrice.toFixed(2)}
+            div.order__details
+                //- each orders in order
+
+                .order-ids 
+                    p.order-id Order ID: ##{order._id}
+                    p.order-id #{order.orderDate}
+                each product in order.order
+                    .order-group
+                        div.order__offers
+                            p.order__name Product Name: #{product.product.name}
+                            div 
+                                p.order__quantity Qty: #{product.quantity} || Unit price: £#{product.product.price}
+                            

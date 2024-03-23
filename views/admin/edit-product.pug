@@ -1,0 +1,29 @@
+extends ../layout/layout.pug
+
+block styles
+    link(rel="stylesheet", href="/css/product.css")
+
+
+block content 
+    main.product-body
+        if (error)
+            div(class="login-message login-message-error") #{error}
+        if (success)
+            div(class="login-message-success") #{success}
+
+        form.add-product-form(action=`/admin/save-edited-product/${oldInput ? oldInput._id : prods._id}` method="POST" novalidate enctype="multipart/form-data")
+            h3 Edit this Product
+            label(for="name" type="text") Product Name
+            input(type="text"  name="name" required class=`add-product-entry ${invalidPath.find(err => err.path === "name") ? "red-border" : ""}` id="name" value=`${oldInput ? oldInput.name : prods.name}`)
+            label(for="description" type="text") Product Description
+            textarea(name="description" class=` .product__description ${invalidPath.find(err => err.path === "description") ? "red-border" : ""}` placeholder="Describe the product" required id="description"  cols="30" rows="10" maxLength="120") #{oldInput ? oldInput.description : prods.description} 
+            label(for="price" type="text") Product Price
+            input(type="text"  required class=`add-product-entry ${invalidPath.find(err => err.path === "price") ? "red-border" : ""}` name="price" id="price" step="0.01" value=`${oldInput ? oldInput.price : prods.price}`)
+            //- label(for="imageUrl" type="text") Product Image Url
+            //- input(type="text" required class=`add-product-entry ${invalidPath.find(err => err.path === "imageUrl") ? "red-border" : ""}` name="imageUrl" id="imageUrl" value=`${oldInput ? oldInput.imageUrl : prods.imageUrl}`)
+            label(for="image" type="text") Product Image
+            input.add-product-entry(type="file" class="image-input" required name="image" id="image")
+            input(type="hidden", name="_csrf" value=`${csrfToken}`)
+            a(href="/admin/save-edited-product")
+                button.add-product-btn Save Changes
+            input(type="hidden", value=`${oldInput ? oldInput._id : prods._id}`, name="productId")

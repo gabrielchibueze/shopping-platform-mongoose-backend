@@ -1,0 +1,24 @@
+extends ../layout/layout.pug
+
+block styles
+    link(rel="stylesheet", href="/css/product.css")
+
+
+block content 
+    div.login-page
+        main.product-body
+            if (error)
+                div(class="login-message login-message-error") #{error}
+            else if (loginSuccess)
+                div(class="login-message login-message-error") #{loginSuccess}
+
+            form.add-product-form(action="/login" method="POST")
+                h3 Login to your account
+                label(for="email" type="text") Enter your email
+                input(type="text"  name="email" class=`add-product-entry ${invalidPath === "email" ? "red-border" : ""}` value=`${oldInput ? oldInput.email : ""}` required id="email")
+                label(for="password") Enter your password
+                input(type="password" required name="password" class=`add-product-entry ${invalidPath === "password" ? "red-border" : ""}` value=`${oldInput? oldInput.password: ""}` id="password")
+                input(type="hidden", name="_csrf" value=`${csrfToken}`)
+                button.add-product-btn Login
+                hr 
+                a(href="/reset-password") Forgotten password? Reset

@@ -1,0 +1,45 @@
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title #{pageTitle}
+        block styles
+        link(rel="stylesheet" href="/css/shop.css")
+        link(rel="stylesheet" href="/css/main.css")
+
+    body
+        header.main-header
+            .header-list
+                .left-header
+                    p.header-list-items
+                        a(href="/", class=(path==="/" ? "active" : "")) Shop
+                    if(isAuthenticated)
+                        .header-list-items
+                            a(href=(path==="/cart" ? "#" : "/cart"), class=(path==="/cart" ? "active" : "")) Cart
+                        p.header-list-items
+                            a(href=(path==="/orders" ? "#" : "/orders"), class=(path==="/admin/orders" ? "active" : "")) Orders
+                        p ||
+                        p.header-list-items
+                            a(href="/admin/products", class=(path==="/admin/products" ? "active" : "")) Products
+                        p.header-list-items
+                            a(href=(path==="/add-product" ? "#" : "/admin/add-product"), class=(path==="/add-product" ? "active" : "")) Add Product
+
+                .right-header
+                    if (isAuthenticated)
+                        .user-salute 
+                            p.header-list-items Hello #{username}
+                            p.header-list-items
+                                a(href=(path==="/logout" ? "#" : "/logout"), class=(path==="/logout" ? "active" : "")) Logout
+
+                    else
+                        .login-signup
+                            p.header-list-items
+                                a(href=(path==="/login" ? "#" : "/login"), class=(path==="/login" ? "active" : "")) Login
+                            p.header-list-items
+                                a(href=(path==="/signup" ? "#" : "/signup"), class=(path==="/signup" ? "active" : "")) Signup
+
+
+        .main-content
+            block content
+
+        //- script(src="/javascript/admin.js")

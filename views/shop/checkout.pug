@@ -1,0 +1,35 @@
+extends ../layout/layout.pug
+
+block styles 
+    link(rel="stylesheet", href="/css/product.css")
+block content
+    if(prod.length > 0)
+
+        div.product__main
+            div 
+                h1 Order checkout 
+                p Please comfirm the details of your order
+            div.all__cart
+                each product in prod
+                    div.checkout__main-details
+                        img.cart__img(src=`/${product.productId.imageUrl}`)
+                        div.checkout__desccription 
+                            h3.cart__title Product: #{product.productId.name}
+                            div.checkout__offers
+                                h5.checkout-details Unit price: £#{product.productId.price.toFixed(2)}
+                                h5.checkout-details Total qty: #{product.quantity}
+                                h5.checkout-details Total price: £#{product.quantity * product.productId.price.toFixed(2)}
+
+            div.total-price     
+                h4 Price: £#{totalPrice.toFixed(2)}
+            div.total-price 
+                button(class="place-order" id="order-button") Order now!
+                script(src="https://js.stripe.com/v3/")
+                script.
+                    var stripe = Stripe('pk_test_51Ow2GtLJwZtbfmhWVECKc7AmAELKJ2DpQx5i0Dik3eTeK4IuHj9EgyrWbobahbs3Rz0q3WCkrGHYkgRFIFUVu4CN00uJrbQJgd');
+                    var orderButton = document.getElementById("order-button")
+                    orderButton.addEventListener("click", function(){
+                        stripe.redirectToCheckout({
+                            sessionId: "#{session}"
+                        });
+                    })

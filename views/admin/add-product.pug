@@ -1,0 +1,27 @@
+extends ../layout/layout.pug
+
+block styles
+    link(rel="stylesheet", href="/css/product.css")
+
+
+block content 
+    main.product-body
+        if (error)
+            div(class="login-message login-message-error") #{error}
+        if (success)
+            div(class="login-message-success") #{success}
+
+        form.add-product-form(action="/admin/add-product" method="POST" novalidate enctype="multipart/form-data")
+            h3 Add a product
+            label(for="name" type="text") Product Name
+            input.add-product-entry(type="text" class=` add-product-entry ${invalidPath.find(err => err.path === "name") ? "red-border" : ""}` value=`${oldInput? oldInput.name: ""}`  name="name" required id="name")
+            label(for="description" type="text") Product Description
+            textarea.product__description(name="description" class=` add-product-entry ${invalidPath.find(err => err.path === "description") ? "red-border" : ""}` placeholder="Describe the product" required id="description" resize="none"  cols="30" rows="10") #{oldInput ? oldInput.description: ""}
+            label(for="price" type="text") Product Price
+            input.add-product-entry(type="number" class=` add-product-entry ${invalidPath.find(err => err.path === "price") ? "red-border" : ""}` value=`${oldInput? oldInput.price: ""}` steps="0.01"  required name="price" id="price" step="0.01")
+            //- label(for="imageUrl" type="text") Product Image Url
+            //- input.add-product-entry(type="text" class=` add-product-entry ${invalidPath.find(err => err.path === "imageUrl") ? "red-border" : ""}` value=`${oldInput? oldInput.imageUrl: ""}` required name="imageUrl" id="imageUrl")
+            label(for="image" type="text") Product Image
+            input.add-product-entry(type="file" class="image-input" required name="image" id="image")
+            input(type="hidden", name="_csrf" value=`${csrfToken}`)
+            button.add-product-btn Add Product

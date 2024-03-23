@@ -1,0 +1,43 @@
+extends ../layout/layout.pug
+
+block styles
+     link(rel="stylesheet" href="/css/shop.css")
+
+block content
+    if(prods.length > 0)
+
+        div.product__main
+            h1 My Products
+            div.all__products
+                each product in prods
+                    div.product__details
+                        h2.product__title #{product.name}
+                        img.product__img(src=`/${product.imageUrl}`)
+                        div.product__offers
+                            h3.product__price £#{product.price}
+                            p.product__desc #{product.description}
+                            div.details__add-to-cart 
+                                a(href=`/products/${product._id}`)
+                                    button.product__add-to-cart Details
+                                if(isAuthenticated)
+                                    //- form(action="/shop-add-to-cart" method="post") 
+                                    input(type="hidden", name="productId", value=`${product._id}`)
+                                    input(type="hidden", name="_csrf" value=`${csrfToken}`)
+                                    button.product__add-to-cart(onclick="addToCart(this)") Add to cart
+
+            if(totalItems > contentPerPage)
+                section.pagination 
+                    if(currentPage != 1)
+                        a.page-number(href=`/?page=1`) 1
+                    if(hasPreviousPage && previousPage !== 1)
+                        a.page-number(href=`/?page=${previousPage}`) #{previousPage}
+                    a.page-number(href=`/?page=${currentPage}` class="active") #{currentPage}
+
+                    if(hasNextPage)
+                        a.page-number(href=`/?page=${nextPage}`) #{nextPage}
+                    if(lastPage !== currentPage && nextPage !== lastPage)
+                        a.page-number(href=`/?page=${lastPage}`) #{lastPage}
+    else 
+        main.shop-body
+            h1 No products available
+    script(src="/javascript/shop.js")

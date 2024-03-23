@@ -1,0 +1,35 @@
+extends ../layout/layout.pug
+
+block styles 
+    link(rel="stylesheet", href="/css/product.css")
+block content
+    if(prod.length > 0)
+
+        div.product__main
+            h1 My Cart
+            div.all__cart
+                each product in prod
+                    div.cart__details
+                        img.cart__img(src=`/${product.product.imageUrl}`)
+                        div.cart__desccription 
+                            h3.cart__title #{product.product.name}
+                            div.cart__offers
+                                h4.cart__price Unit price: £#{product.product.price}
+                                h4 ||
+                                h4.cart__price Qty: #{product.quantity}
+                            div.detail__order 
+                                a(href=`/products/${product.product._id}`)
+                                    button.product__add-to-cart View details
+                                form(action=`/remove-cart/${product.product._id}` method="post") 
+                                    input(type="hidden", name="productId" value=`${product._id}`)
+                                    input(type="hidden", name="_csrf" value=`${csrfToken}`)
+
+                                    a(href="/remove-cart")
+                                        button.product__add-to-cart(type="submit") Remove
+            h4.total-price Total Price: £#{totalPrice}
+            form.place-order-form(action="/order/checkout" method="get")
+                input(type="hidden", name="_csrf" value=`${csrfToken}`)
+                button.place-order(type="submit") Place Order 
+    else 
+        main.shop-body
+            h1 Your cart is currently empty
